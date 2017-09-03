@@ -1,0 +1,71 @@
+ube dashboard
+
+Teraz prosta aplikacja:
+Plik server.js {
+var http = require('http');
+
+var handleRequest = function(request, response) {
+  console.log('Received request for URL: ' + request.url);
+  response.writeHead(200);
+  response.end('Hello World!');
+};
+var www = http.createServer(handleRequest);
+www.listen(8080);
+
+}
+
+Dockerfile:
+FROM node:6.9.2
+EXPOSE 8080
+COPY server.js .
+CMD node server.js
+
+docker build -t hello-node:v1 -f Dockerfile .
+
+kubectl run hello-node --image=hello-node:v1 --port=8080
+kubectl logs -f hello-node-… nazwa poda
+kubectl describe deployment/hello-node
+
+kubectl get events
+
+kubectl expose deployment hello-node --type=LoadBalancer
+
+kubectl get services
+
+http://192.168.99.100:port
+
+dodaje smieci do js
+i nastepnie buduje image
+
+kubectl set image deployment/hello-node hello-node=hello-node:broken
+
+kubectl rollout undo deployment/hello-node --to-revision=2
+
+
+buduje z nowym msg
+
+kubectl set image deployment/hello-node hello-node=hello-node:v2
+kubectl scale --replicas=10 deployment/hello-node
+kubectl delete pod deployment/hello-node……
+
+
+
+Drugi task:
+
+kubectl create -f mysql-rc.yaml
+kubectl create -f mysql-service.yaml
+kubectl create -f guestbookservice-rc.yaml
+kubectl create -f guestbookservice-service.yaml
+kubectl create -f helloworldservice-rc.yaml
+kubectl create -f helloworldservice-service.yaml
+kubectl create -f frontend-rc.yaml
+kubectl create -f frontend-service.yaml
+
+
+
+
+
+
+skalowanie RC
+ kubectl rolling-update demo-app --image=demo/demo:v2
+while true; do curl http://192.168.99.100:32497/hello/hostname && echo "\n" ; done

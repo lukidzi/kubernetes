@@ -1,0 +1,27 @@
+version: '2.1'
+services:
+  mysql:
+    image: mysql:latest
+    container_name: mysql
+    hostname: db
+    ports:
+      - 3306:3306
+    environment:
+     MYSQL_ROOT_PASSWORD: "root"
+     MYSQL_DATABASE: "test"
+    healthcheck:
+     test: "/usr/bin/mysql --user=root --password=root --execute \"SHOW DATABASES;\""
+     interval: 3s
+     timeout: 1s
+     retries: 5
+  demoapp:
+    image: demo/demo:latest
+    container_name: demoapp
+    hostname: demoapp
+    links:
+      - mysql:db
+    ports:
+     - 8080:8080
+    depends_on:
+      mysql:
+       condition: service_healthy
